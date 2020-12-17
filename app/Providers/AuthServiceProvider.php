@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
-
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -16,7 +13,6 @@ class AuthServiceProvider extends ServiceProvider
    protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
     ];
-
     /**
      * Register any authentication / authorization services.
      *
@@ -25,14 +21,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        //  Passport::tokensCan([
-        //     'edit' => 'can edit books available',
-        //     'create' => 'can add new books',
-        //     'delete' => 'can delete books',
-        // ]);
         Passport::routes();
+        Passport::tokensExpireIn(now()->addMinutes(30));
+        Passport::refreshTokensExpireIn(now()->addDays(1));
+        Passport::personalAccessTokensExpireIn(now()->addMinutes(60));
+
     }
 
-        //
-    
 }

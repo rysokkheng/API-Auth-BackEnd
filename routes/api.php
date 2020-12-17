@@ -24,12 +24,13 @@ Route::post('login', 'App\Http\Controllers\API\AuthController@login');
 Route::post('register', 'App\Http\Controllers\API\AuthController@register');
 
 // Route for admin permissions
-Route::middleware('auth:api')->group(function() {
+Route::middleware( ['auth:api','verify.token'])->group(function() {
 	Route::get('users', [ 'as' => 'users.index','uses' =>'App\Http\Controllers\API\UsersController@index']);
     Route::POST('users',['as'=>'users.store', 'uses'=> 'App\Http\Controllers\API\UsersController@store']);
 	// Route::post('login', 'API/AuthController@adminLogin');
 	// Route::post('register', 'API/AuthController@adminRegister');
-    Route::post('roles', 'App\Http\Controllers\API\RolesController@store');
+    Route::post('roles',['as'=>'roles.store', 'uses'=> 'App\Http\Controllers\API\RolesController@store']);
+    Route::get('roles', [ 'as' => 'roles.index','uses' =>'App\Http\Controllers\API\RolesController@index']);
     Route::post('permission', 'App\Http\Controllers\API\PermissionController@store');
 });
 
