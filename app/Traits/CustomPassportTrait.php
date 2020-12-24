@@ -12,7 +12,7 @@ use Lcobucci\JWT\ValidationData;
 
 trait CustomPassportTrait
 {
-    public function validateKeyChain($parseToken)
+    public function   validateKeyChain($parseToken)
     {
         $path = 'file://'.storage_path().'/oauth-public.key';
         $signer = new Sha256();

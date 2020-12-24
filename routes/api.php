@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,10 +24,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('login', 'App\Http\Controllers\API\AuthController@login');
 Route::post('register', 'App\Http\Controllers\API\AuthController@register');
 
-// Route for admin permissions
-Route::middleware( ['auth:api','verify.token'])->group(function() {
+// Route for admin permissions check verify token
+Route::middleware( ['verify.token'])->group(function() {
 	Route::get('users', [ 'as' => 'users.index','uses' =>'App\Http\Controllers\API\UsersController@index']);
     Route::POST('users',['as'=>'users.store', 'uses'=> 'App\Http\Controllers\API\UsersController@store']);
+    Route::get('users/profile',['as'=>'users.userProfile', 'uses'=> 'App\Http\Controllers\API\AuthController@userProfile']);
 	// Route::post('login', 'API/AuthController@adminLogin');
 	// Route::post('register', 'API/AuthController@adminRegister');
     Route::post('roles',['as'=>'roles.store', 'uses'=> 'App\Http\Controllers\API\RolesController@store']);
@@ -39,3 +41,6 @@ Route::get('products/{products}', 'ProductController@show');
 Route::post('product', 'ProductController@store')->middleware(['auth:api', 'scope:create']);
 Route::put('product/{product}', 'ProductController@update')->middleware(['auth:api', 'scope:edit']);
 Route::delete('product/{product}', 'ProductController@destroy')->middleware(['auth:api', 'scope:delete']);
+Route::fallback(function(){
+    return response()->json(['message' => 'Page Not Found. If error persists, contact info@website.com','http_code' =>Response::HTTP_NOT_FOUND]);
+})->name('api.fallback.404');

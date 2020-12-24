@@ -2,12 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\OauthAccessTokens;
 use App\Traits\CustomPassportTrait;
 use App\Traits\StandardResponser;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Response;
-use Lcobucci\JWT\Parser;
-use League\OAuth2\Server\Exception\OAuthServerException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class VerifyToken
 {
@@ -21,27 +24,37 @@ class VerifyToken
      */
     public function handle($request, Closure $next)
     {
-        try {
-            $token = $request->bearerToken();
-            $parseToken = (new Parser())->parse((string)$token);
-
-            // check token valid with the public key
-            $validateKeyChain = $this->validateKeyChain($parseToken);
-
-            // check token expired
-            $validateExpiryDate = $this->validateExpiryDate($parseToken);
-            // check the token has been revoked
-
-            if (!($validateExpiryDate && $validateKeyChain)) {
-                throw new \Exception('Unauthorized', Response::HTTP_UNAUTHORIZED);
-            }
-
-            return $next($request);
-
-        }catch (\Exception $e)
+        $user = Auth::user();
+        $userSerialize = serialize($user);
+        $userUnserializeArray = (array) unserialize($userSerialize);
+        $arrayKeys = array_keys($userUnserializeArray);
+        foreach ($arrayKeys as $value)
         {
-            throw new OAuthServerException('Unauthorized', Response::HTTP_UNAUTHORIZED, 'Invalid Header Authorization');
+            if (strpos($value, 'accessToken') !== false) {
+                $userAccessTokenArray = (array) $userUnserializeArray[$value];
+                $arrayAccessKeys = array_keys($userAccessTokenArray);
+                foreach ($arrayAccessKeys as $arrayAccessValue) {
+                    if (strpos($arrayAccessValue, 'original') !== false) {
+                        $userId = Auth::user()->id;
+                      $userTokenId = DB::table('oauth_access_tokens')
+                          ->select('id')
+                          ->where('user_id',$userId)
+                          ->orderBy('created_at', 'DESC')->limit(1)->value('id');
+                        $checkToken = OauthAccessTokens::where([
+                            ['id', '=', $userTokenId],
+                            ['expires_at', '>', Carbon::now()]
+                        ])->first();
+                        if ( !$checkToken ) {
+                            return response()->json([
+                                'http_code'=>Response::HTTP_UNAUTHORIZED,
+                                'message'=> 'Token time has expired. Please log in again.'
+                            ]);
+                        }
+                    }
+                }
+            }
         }
+        return $next($request);
     }
 
 

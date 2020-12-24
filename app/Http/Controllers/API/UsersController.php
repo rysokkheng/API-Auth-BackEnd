@@ -12,6 +12,7 @@ use Hash;
 class UsersController extends Controller
 {
 
+
    public function index()
     {
         $users = User::all();
@@ -41,4 +42,7 @@ class UsersController extends Controller
           $user->assignRole($request->input('roles'));
          return response()->json(['success' => true, 'http_code' => Response::HTTP_OK,'data' => $user,'message' => 'Create User Successfully']);
      }
+
+
+
 }
