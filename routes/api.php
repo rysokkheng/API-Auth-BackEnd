@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,7 +26,7 @@ Route::post('login', 'App\Http\Controllers\API\AuthController@login');
 Route::post('register', 'App\Http\Controllers\API\AuthController@register');
 
 // Route for admin permissions check verify token
-Route::middleware( ['verify.token'])->group(function() {
+Route::middleware( ['verify.token','auth:api'])->group(function() {
 	Route::get('users', [ 'as' => 'users.index','uses' =>'App\Http\Controllers\API\UsersController@index']);
     Route::POST('users',['as'=>'users.store', 'uses'=> 'App\Http\Controllers\API\UsersController@store']);
     Route::get('users/profile',['as'=>'users.userProfile', 'uses'=> 'App\Http\Controllers\API\AuthController@userProfile']);
