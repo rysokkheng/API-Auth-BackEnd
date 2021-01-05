@@ -15,7 +15,7 @@ class PermissionController extends Controller
 {
 
     public function index(){
-        $getPermission = Permission::where('record_status_id',1)->get();
+        $getPermission = Permission::where('record_status_id',1)->limit(10)->get();
         $data = PermissionResource::collection($getPermission);
         if (!empty($data)){
             return response()->json(['success' => true, 'http_code' => Response::HTTP_OK,'data' => $data,'message' => 'successfully']);
@@ -50,5 +50,8 @@ class PermissionController extends Controller
        }else{
            return response()->json(['success' => false, 'http_code' => Response::HTTP_NOT_FOUND,'data' => $data,'errors' => 'errors']);
        }
+   }
+   public function all(){
+
    }
 }

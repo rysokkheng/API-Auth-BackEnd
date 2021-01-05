@@ -36,6 +36,7 @@ Route::middleware( ['verify.token','auth:api'])->group(function() {
     Route::get('permission', [ 'as' => 'permission.index','uses' =>'App\Http\Controllers\API\PermissionController@index']);
     Route::get('permission/{id}', [ 'as' => 'permission.show','uses' =>'App\Http\Controllers\API\PermissionController@show']);
     Route::delete('permission/{id}', [ 'as' => 'permission.destroy','uses' =>'App\Http\Controllers\API\PermissionController@destroy']);
+    Route::get('permission-group/all', [ 'as' => 'permissionGroup.all','uses' =>'App\Http\Controllers\API\PermissionGroupController@getAll']);
 });
 
 Route::get('products', 'ProductController@index');
