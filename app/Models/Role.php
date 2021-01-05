@@ -16,4 +16,8 @@ class Role extends  \Spatie\Permission\Models\Role
         'created_by',
         'updated_by',
     ];
+    public function user()
+    {
+        return $this->hasMany('App\Models\User');
+    }
 }

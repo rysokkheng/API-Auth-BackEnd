@@ -9,6 +9,7 @@ use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable,HasApiTokens, Notifiable;
@@ -29,6 +30,10 @@ class User extends Authenticatable
         'created_by',
         'updated_by',
     ];
+    public function role()
+    {
+        return $this->belongsTo('App\Models\Role');
+    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -48,5 +53,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
 
 }

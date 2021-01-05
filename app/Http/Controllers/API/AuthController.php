@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\API;
 
-use App\Models\OauthAccessTokens;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -20,20 +19,27 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         $credentials = $request->only(['username', 'password']);
+
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $data = $user->createToken('MyApp')->accessToken;
             return response()->json([
                 'success' => true,
                 'http_code' => Response::HTTP_OK,
-                'token' => $data,
+                'data' => $data,
                 'token_type' => 'Bearer',
-                'expires_in' => 'Bearer',
                 'message' => 'login_success'
             ]);
         }
         else {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json( [
+                'success' => 'false,',
+                'http_code' => Response::HTTP_UNAUTHORIZED,
+                'error_code' => '1',
+                'errors' => [
+                    "login_fail"
+                ]
+                ]);
         }
     }
 
