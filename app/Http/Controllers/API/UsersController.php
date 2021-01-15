@@ -6,34 +6,33 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Validator;
-use DB;
 use Hash;
 
 class UsersController extends Controller
 {
-
-
    public function index()
     {
         $users = User::all();
         $data = UserResource::collection($users);
-        if (!empty($data)){
-            return response()->json(['success' => true, 'http_code' => Response::HTTP_OK,'data' => $data,'message' => 'successfully']);
-        }else{
-            return response()->json(['success' => false, 'http_code' => Response::HTTP_NOT_FOUND,'data' => $data,'errors' => 'errors']);
-        }
-
+        return $this->getSuccessResponseArray(__('success'),$data);
      }
      public  function store(CreateUserRequest $request){
 
-          $input = $request->all();
-          $input['password'] = Hash::make($input['password']);
-          $user = User::create($input);
-          $user->assignRole($request->input('roles'));
+             DB::beginTransaction();
+         try {
+             $input = $request->all();
+             $input['password'] = Hash::make($input['password']);
+             $user = User::create($input);
+             $user->assignRole($request->input('roles'));
+             DB::commit();
+             return $this->getSuccessResponseArray(__('global.save_success'),$user);
+         }catch (\Exception $e){
+             DB::rollBack();
+             return $this->getErrorResponseArray(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+         }
 
-
-         return response()->json(['success' => true, 'http_code' => Response::HTTP_OK,'data' => $user,'message' => 'Create User Successfully']);
      }
 
 
