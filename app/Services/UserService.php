@@ -11,6 +11,10 @@ namespace App\Services;
 
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\UserServiceInterface;
+use App\Http\Requests\User\CreateUserRequest;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserService extends SimpleService implements UserServiceInterface
 {
@@ -24,6 +28,27 @@ class UserService extends SimpleService implements UserServiceInterface
 
         $result = $this->repository()->all();
         return $this->getSuccessResponseArray(__('success'), $result);
+    }
+    public function insert(CreateUserRequest $userCreateRequest)
+    {
+        DB::beginTransaction();
+        try {
+            $userCreateRequest->merge([
+                'password'  => Hash::make($userCreateRequest->get('password')),
+            ]);
+            $user = $this->repository()->create($userCreateRequest->toArray());
+            $user->assignRole($userCreateRequest->input('roles'));
+            DB::commit();
+            return $this->getSuccessResponseArray(__('Save Success'),$user);
+        }catch (\Exception $e){
+            DB::rollBack();
+            return  $this->getErrorResponseArray(Response::HTTP_INTERNAL_SERVER_ERROR,$e->getMessage());
+        }
+        // TODO: Implement insert() method.
+    }
+    public function delete($id)
+    {
+        return $this->deleteData($id);
     }
 
 

@@ -29,12 +29,10 @@ namespace App\Services;
 
     public function __construct()
     {
-
         if ($this->repository()== null){
             throw new Exception(get_class($this).' extends from BaseService must implement repository method with returning a repository.');
         }
     }
-
      /**
       * @return array
       */
@@ -49,7 +47,6 @@ namespace App\Services;
         }
         return $this->getSuccessResponseArray(__('success'),$result);
     }
-
 
     public function getAll(){
 

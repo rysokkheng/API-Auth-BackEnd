@@ -15,7 +15,11 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 class UserRepositoryEloquent extends BaseRepository implements UserRepositoryInterface
 {
-
+    protected $fieldSearchable = [
+        'fullname',
+        'username',
+        'phone'
+    ];
     public function model()
     {
         // TODO: Implement model() method.
