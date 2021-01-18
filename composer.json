@@ -10,13 +10,19 @@
     "require": {
         "php": "^7.3|^8.0",
         "bensampo/laravel-enum": "^3.2",
+        "cyvelnet/laravel5-fractal": "^2.4",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "konsulting/laravel-transformer": "^0.5.2",
         "laravel/framework": "^8.12",
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "lcobucci/jwt": "^3.4",
+        "league/fractal": "^0.19.2",
+        "prettus/l5-repository": "^2.7",
+        "saintsystems/eloquent-transformable": "^0.0.5",
+        "spatie/laravel-fractal": "^5.8",
         "spatie/laravel-permission": "^3.18",
         "tymon/jwt-auth": "^1.0"
     },
@@ -24,7 +30,7 @@
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^0.0.5",
-        "mockery/mockery": "^1.4.2",
+        "mockery/mockery": "^1.4",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"
     },

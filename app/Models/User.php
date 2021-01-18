@@ -20,13 +20,20 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $table = 'users';
+
+    const RECORD_STATUS_FIELD   = 'record_status_id';
+    const RECORD_STATUS_ACTIVE  = 1;
+    const RECORD_STATUS_DELETE  = 0;
+
+
     protected $fillable = [
         'fullname',
         'username',
         'email',
         'password',
         'phone',
-        'record_status_id',
+        self::RECORD_STATUS_FIELD,
         'created_by',
         'updated_by',
     ];

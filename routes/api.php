@@ -28,6 +28,7 @@ Route::post('register', 'App\Http\Controllers\API\AuthController@register');
 // Route for admin permissions check verify token
 Route::middleware( ['verify.token','auth:api'])->group(function() {
 	Route::get('users', [ 'as' => 'users.index','uses' =>'App\Http\Controllers\API\UsersController@index']);
+    Route::get('users/all', [ 'as' => 'users.all','uses' =>'App\Http\Controllers\API\UsersController@getAll']);
     Route::POST('users',['as'=>'users.store', 'uses'=> 'App\Http\Controllers\API\UsersController@store']);
     Route::get('users/profile',['as'=>'users.userProfile', 'uses'=> 'App\Http\Controllers\API\AuthController@userProfile']);
     Route::post('roles',['as'=>'roles.store', 'uses'=> 'App\Http\Controllers\API\RolesController@store']);

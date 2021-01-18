@@ -1,22 +1,39 @@
 <?php
 namespace App\Http\Controllers\API;
 
+use App\Contracts\Services\UserServiceInterface;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Spatie\Fractal\Fractal;
 use Validator;
 use Hash;
 
 class UsersController extends Controller
 {
-   public function index()
+    private $userService;
+    protected $transformer = UserTransformer::class;
+
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    public function index()
     {
         $users = User::all();
         $data = UserResource::collection($users);
         return $this->getSuccessResponseArray(__('success'),$data);
+     }
+
+     public function getAll(){
+        $result = $this->userService->getAll();
+        $result['data'] = Fractal::create( $result['data'] , new UserTransformer())->toArray();
+        return response()->json($result, $result['http_code']);
      }
      public  function store(CreateUserRequest $request){
 
