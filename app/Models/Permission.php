@@ -2,11 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+
+class Permission extends \Spatie\Permission\Models\Permission
 {
+    const RECORD_STATUS_FIELD   = 'record_status_id';
+    const RECORD_STATUS_ACTIVE  = 1;
+    const RECORD_STATUS_DELETE  = 0;
+
+    const CREATED_AT_FIELD  = 'created_at';
+    const CREATED_BY_FIELD  = 'created_by';
+    const UPDATED_AT_FIELD  = 'updated_at';
+    const UPDATED_BY_FIELD  = 'updated_by';
+
+
+
     protected $table = 'permissions';
+    public $fillable = ['group_permission_id','name', 'display_name_en','display_name_kh', 'guard_name',self::RECORD_STATUS_FIELD, self::CREATED_BY_FIELD, self::UPDATED_BY_FIELD];
 
 }
