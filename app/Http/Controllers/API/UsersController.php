@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Contracts\Services\UserServiceInterface;
-use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UserCreateRequest;
 use App\Transformers\UserTransformer;
 use App\Http\Controllers\Controller;;
 use Spatie\Fractal\Fractal;
@@ -35,7 +35,7 @@ class UsersController extends Controller
          $result['data'] = Fractal::create( $result['data'] , new UserTransformer())->toArray();
          return response()->json($result, $result['http_code']);
      }
-     public  function store(CreateUserRequest $userCreateRequest){
+     public  function store(UserCreateRequest $userCreateRequest){
         $result = $this->userService->insert($userCreateRequest);
 //        $result['data'] = Fractal::create( $result['data'] , new UserTransformer())->toArray();
         return response()->json($result, $result['http_code']);

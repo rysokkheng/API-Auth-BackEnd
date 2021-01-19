@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Contracts\Services\PermissionServiceInterface;
-use App\Http\Requests\Permission\PermissionsRequest;
-use App\Http\Resources\PermissionResource;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Permission\PermissionsCreateRequest;
 use App\Transformers\PermissionTransformer;
 use App\User;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Spatie\Fractal\Fractal;
 use Validator;
-use Spatie\Permission\Models\Permission;
+
 
 class PermissionController extends Controller
 {
@@ -23,12 +20,21 @@ class PermissionController extends Controller
     {
         $this->permissionService = $permissionService;
     }
-
+    public function index(){
+        $result = $this->permissionService->getByPaginate();
+        $result['data'] = Fractal::create( $result['data'] , new PermissionTransformer())->toArray();
+        return response()->json($result, $result['http_code']);
+    }
     public function getAll(){
         $result = $this->permissionService->getAll();
         $result['data'] = Fractal::create( $result['data'] , new PermissionTransformer())->toArray();
         return response()->json($result, $result['http_code']);
     }
+    public function store(PermissionsCreateRequest $permissionsCreateRequest){
+        $result = $this->permissionService->insert($permissionsCreateRequest);
+        return response()->json($result, $result['http_code']);
+    }
+
 
 
 
