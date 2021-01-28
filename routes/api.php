@@ -27,23 +27,24 @@ Route::post('register', 'App\Http\Controllers\API\AuthController@register');
 
 // Route for admin permissions check verify token
 Route::middleware( ['verify.token','auth:api'])->group(function() {
-	Route::get('users', [ 'as' => 'users.index','uses' =>'App\Http\Controllers\API\UsersController@index']);
-    Route::get('users/all', [ 'as' => 'users.all','uses' =>'App\Http\Controllers\API\UsersController@getAll']);
+	Route::get('users', ['as' => 'users.index','uses' =>'App\Http\Controllers\API\UsersController@index']);
+    Route::get('users/all', ['as' => 'users.all','uses' =>'App\Http\Controllers\API\UsersController@getAll']);
     Route::get('users/profiles',['as'=>'users.userProfiles', 'uses'=> 'App\Http\Controllers\API\UsersController@userProfiles']);
-    Route::get('users/{user}', [ 'as' => 'users.show','uses' =>'App\Http\Controllers\API\UsersController@show']);
+    Route::get('users/{user}', ['as' => 'users.show','uses' =>'App\Http\Controllers\API\UsersController@show']);
     Route::POST('users',['as'=>'users.store', 'uses'=> 'App\Http\Controllers\API\UsersController@store']);
+    Route::POST('users/{id}/resetPassword',['as'=>'users.resetPass', 'uses'=> 'App\Http\Controllers\API\UsersController@resetPass']);
     Route::delete('users/{id}',['as'=>'users.destroy', 'uses'=> 'App\Http\Controllers\API\UsersController@destroy']);
 
 
     Route::post('roles',['as'=>'roles.store', 'uses'=> 'App\Http\Controllers\API\RolesController@store']);
-    Route::get('roles', [ 'as' => 'roles.index','uses' =>'App\Http\Controllers\API\RolesController@index']);
+    Route::get('roles', ['as' => 'roles.index','uses' =>'App\Http\Controllers\API\RolesController@index']);
 
     Route::post('permission',['as'=>'permission.store', 'uses'=> 'App\Http\Controllers\API\PermissionController@store']);
-    Route::get('permission', [ 'as' => 'permission.index','uses' =>'App\Http\Controllers\API\PermissionController@index']);
-    Route::get('permission/all', [ 'as' => 'permission.all','uses' =>'App\Http\Controllers\API\PermissionController@getAll']);
-    Route::get('permission/{id}', [ 'as' => 'permission.show','uses' =>'App\Http\Controllers\API\PermissionController@show']);
-    Route::delete('permission/{id}', [ 'as' => 'permission.destroy','uses' =>'App\Http\Controllers\API\PermissionController@destroy']);
-    Route::get('permission-group/all', [ 'as' => 'permissionGroup.all','uses' =>'App\Http\Controllers\API\PermissionGroupController@getAll']);
+    Route::get('permission', ['as' => 'permission.index','uses' =>'App\Http\Controllers\API\PermissionController@index']);
+    Route::get('permission/all', ['as' => 'permission.all','uses' =>'App\Http\Controllers\API\PermissionController@getAll']);
+    Route::get('permission/{id}', ['as' => 'permission.show','uses' =>'App\Http\Controllers\API\PermissionController@show']);
+    Route::delete('permission/{id}', ['as' => 'permission.destroy','uses' =>'App\Http\Controllers\API\PermissionController@destroy']);
+    Route::get('permission-group/all', ['as' => 'permissionGroup.all','uses' =>'App\Http\Controllers\API\PermissionGroupController@getAll']);
 });
 
 Route::get('products', 'ProductController@index');

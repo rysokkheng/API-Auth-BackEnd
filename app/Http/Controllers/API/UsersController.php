@@ -3,6 +3,8 @@ namespace App\Http\Controllers\API;
 
 use App\Contracts\Services\UserServiceInterface;
 use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\User\UserResetRequest;
+use App\Transformers\ResetPasswordTransformer;
 use App\Transformers\UserTransformer;
 use App\Http\Controllers\Controller;;
 use Spatie\Fractal\Fractal;
@@ -50,6 +52,11 @@ class UsersController extends Controller
      public function destroy($id){
          $result = $this->userService->delete($id);
          $result['data'] = Fractal::create( $result['data'] , new UserTransformer())->toArray();
+         return response()->json($result, $result['http_code']);
+     }
+     public function resetPass(UserResetRequest $resetRequest,$id){
+         $result = $this->userService->resetPass($resetRequest, $id);
+         $this->transformer = ResetPasswordTransformer::class;
          return response()->json($result, $result['http_code']);
      }
 

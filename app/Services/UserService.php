@@ -12,8 +12,10 @@ namespace App\Services;
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\UserServiceInterface;
 use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\User\UserResetRequest;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -56,10 +58,29 @@ class UserService extends SimpleService implements UserServiceInterface
         return $this->deleteData($id);
     }
 
-
     public function repository()
     {
         return $this->userRepository;
         // TODO: Implement repository() method.
+    }
+    public function resetPass (UserResetRequest $resetRequest, $id){
+        DB::beginTransaction();
+        try {
+                $AuthId = Auth::id();
+                if (!empty($resetRequest->get('password'))){
+                    $resetRequest->merge( array(
+                        'password' => Hash::make($resetRequest->get('password')),
+                        'updated_by' =>  $AuthId
+                    ));
+                } else{
+                    $resetRequest = collect($resetRequest->except('password'));
+                }
+                $getResetPass = $this->repository()->update($resetRequest->all(), $id);
+            DB::commit();
+                return $this->getSuccessResponseArray(__('Save Success'),$getResetPass);
+        }catch (\Exception $e){
+            DB::rollBack();
+            return  $this->getErrorResponseArray(Response::HTTP_INTERNAL_SERVER_ERROR,$e->getMessage());
+        }
     }
 }
