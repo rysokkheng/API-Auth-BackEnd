@@ -36,6 +36,7 @@ class PermissionTransformer extends TransformerAbstract
             'id' => $model->id,
             'name' => $model->name,
             'display_name_en' => $model->display_name_en,
+            'display_name_kh' => $model->display_name_kh,
             'status' => $model->record_status_id,
             'created_at' => $model->created_at->format('d-M-Y'),
             'updated_at' => $model->updated_at->format('d-M-Y'),
