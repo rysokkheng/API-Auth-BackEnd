@@ -25,7 +25,14 @@ class UsersController extends Controller
         $result['data'] = Fractal::create( $result['data'] , new UserTransformer())->toArray();
         return response()->json($result, $result['http_code']);
     }
-     public function getAll(){
+    public function userProfiles(){
+        $AuthID = auth()->user();
+        $result = $this->userService->getUserProfile($AuthID);
+        $result['data'] = Fractal::create( $result['data'] , new UserTransformer())->toArray();
+        return response()->json($result, $result['http_code']);
+    }
+
+    public function getAll(){
         $result = $this->userService->getAll();
         $result['data'] = Fractal::create( $result['data'] , new UserTransformer())->toArray();
         return response()->json($result, $result['http_code']);

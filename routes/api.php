@@ -29,10 +29,11 @@ Route::post('register', 'App\Http\Controllers\API\AuthController@register');
 Route::middleware( ['verify.token','auth:api'])->group(function() {
 	Route::get('users', [ 'as' => 'users.index','uses' =>'App\Http\Controllers\API\UsersController@index']);
     Route::get('users/all', [ 'as' => 'users.all','uses' =>'App\Http\Controllers\API\UsersController@getAll']);
+    Route::get('users/profiles',['as'=>'users.userProfiles', 'uses'=> 'App\Http\Controllers\API\UsersController@userProfiles']);
     Route::get('users/{user}', [ 'as' => 'users.show','uses' =>'App\Http\Controllers\API\UsersController@show']);
     Route::POST('users',['as'=>'users.store', 'uses'=> 'App\Http\Controllers\API\UsersController@store']);
     Route::delete('users/{id}',['as'=>'users.destroy', 'uses'=> 'App\Http\Controllers\API\UsersController@destroy']);
-    Route::get('users/profile',['as'=>'users.userProfile', 'uses'=> 'App\Http\Controllers\API\AuthController@userProfile']);
+
 
     Route::post('roles',['as'=>'roles.store', 'uses'=> 'App\Http\Controllers\API\RolesController@store']);
     Route::get('roles', [ 'as' => 'roles.index','uses' =>'App\Http\Controllers\API\RolesController@index']);

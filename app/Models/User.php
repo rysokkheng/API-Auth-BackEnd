@@ -41,6 +41,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Role');
     }
+    public function userProfile() {
+        return $this->belongsTo('App\Models\User');
+    }
 
     /**
      * The attributes that should be hidden for arrays.

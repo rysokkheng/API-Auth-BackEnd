@@ -6,8 +6,11 @@ namespace App\Services;
 
 use App\Contracts\Repositories\PermissionRepositoryInterface;
 use App\Contracts\Services\PermissionServiceInterface;
+use App\Enums\DateFormatEnum;
 use App\Http\Requests\Permission\PermissionsCreateRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PermissionService extends SimpleService implements PermissionServiceInterface
@@ -27,7 +30,11 @@ class PermissionService extends SimpleService implements PermissionServiceInterf
     {
             DB::beginTransaction();
         try {
-                $permission = $this->repository()->create($permissionsCreateRequest->toArray());
+                $AuthId = Auth::id();
+                $request = collect($permissionsCreateRequest)->merge(array(
+                    'created_by' =>  $AuthId,
+                ));
+                $permission = $this->repository()->create($request->all());
             DB::commit();
                 return $this->getSuccessResponseArray(__('Save Success'),$permission);
         }catch (\Exception $e){

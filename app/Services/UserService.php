@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\UserServiceInterface;
 use App\Http\Requests\User\UserCreateRequest;
+use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,10 @@ class UserService extends SimpleService implements UserServiceInterface
     public function getAll(){
 
         $result = $this->repository()->all();
+        return $this->getSuccessResponseArray(__('success'), $result);
+    }
+    public function getUserProfile($AuthID){
+        $result = User::with('userProfile')->find($AuthID);
         return $this->getSuccessResponseArray(__('success'), $result);
     }
     public function insert(UserCreateRequest $userCreateRequest)
