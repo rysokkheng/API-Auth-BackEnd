@@ -27,6 +27,13 @@ class UserService extends SimpleService implements UserServiceInterface
     {
         $this->userRepository = $userRepository;
     }
+    public function getUserByUsername($username){
+        $user = $this->repository()->findWhere([
+            'username' => $username,
+            'record_status_id' => '1'
+        ])->first();
+        return $user;
+    }
     public function getAll(){
 
         $result = $this->repository()->all();

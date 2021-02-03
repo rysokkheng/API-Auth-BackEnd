@@ -22,8 +22,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Auth routes
-Route::post('login', 'App\Http\Controllers\API\AuthController@login');
+//Route::post('login', 'App\Http\Controllers\API\AuthController@login');
+Route::post('login', 'App\Http\Controllers\API\LoginController@login');
+Route::post('refresh_token', 'App\Http\Controllers\API\LoginController@refreshToken');
 Route::post('register', 'App\Http\Controllers\API\AuthController@register');
+
+
 
 // Route for admin permissions check verify token
 Route::middleware( ['verify.token','auth:api'])->group(function() {

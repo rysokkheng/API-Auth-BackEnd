@@ -2,12 +2,16 @@
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\LoginRepositoryInterface;
 use App\Contracts\Repositories\PermissionRepositoryInterface;
 use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Contracts\Services\LoginServiceInterface;
 use App\Contracts\Services\PermissionServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
+use App\Repositories\LoginRepositoryEloquent;
 use App\Repositories\PermissionRepositoryEloquent;
 use App\Repositories\UserRepositoryEloquent;
+use App\Services\LoginService;
 use App\Services\PermissionService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
@@ -28,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(PermissionServiceInterface::class,PermissionService::class);
         $this->app->bind(PermissionRepositoryInterface::class,PermissionRepositoryEloquent::class);
+
+        $this->app->bind(LoginServiceInterface::class,LoginService::class);
+        $this->app->bind(LoginRepositoryInterface::class,LoginRepositoryEloquent::class);
     }
 
     /**

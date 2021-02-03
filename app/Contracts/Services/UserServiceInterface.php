@@ -10,6 +10,7 @@ use App\Http\Requests\User\UserResetRequest;
 interface UserServiceInterface
 {
     public function getAll();
+    public function getUserByUsername($username);
     public function getByPaginate();
     public function resetPass(UserResetRequest $resetRequest, $id);
     public function getById($id);
