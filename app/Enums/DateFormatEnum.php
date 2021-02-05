@@ -18,5 +18,6 @@ final class DateFormatEnum extends Enum
     const YmdHis= 'Y-m-d H:i:s';
     const d_M_Y   = 'd M Y';
     const dMYHis  = 'd-M-Y H:i:s';
+    const  His   = 'H:i:s';
 
 }

@@ -8,6 +8,7 @@ use App\Contracts\Repositories\LoginRepositoryInterface;
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\LoginServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
+use App\Enums\DateFormatEnum;
 use App\Enums\PermissionEnum;
 use App\Helpers\PBKDF2;
 use App\Http\Requests\Login\CreateLoginRequest;
@@ -67,7 +68,7 @@ class LoginService extends SimpleService implements LoginServiceInterface
             'role' => $role,
             'permission' => $permissions,
             'token_type' => 'Bearer',
-            'expires_in' => Carbon::parse($tokenResult->token->expires_at)->diffInSeconds(Carbon::now()),
+            'expires_in' => Carbon::parse($tokenResult->token->expires_at)->format(DateFormatEnum::YmdHis),
             'data' => $tokenResult->accessToken
         ];
 
