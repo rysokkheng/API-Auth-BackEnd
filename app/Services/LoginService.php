@@ -13,10 +13,8 @@ use App\Enums\PermissionEnum;
 use App\Helpers\PBKDF2;
 use App\Http\Requests\Login\CreateLoginRequest;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class LoginService extends SimpleService implements LoginServiceInterface
@@ -68,7 +66,7 @@ class LoginService extends SimpleService implements LoginServiceInterface
             'role' => $role,
             'permission' => $permissions,
             'token_type' => 'Bearer',
-            'expires_in' => Carbon::parse($tokenResult->token->expires_at)->format(DateFormatEnum::YmdHis),
+            'expires_in' => Carbon::parse($tokenResult->token->expires_at)->format(    DateFormatEnum::YmdHis),
             'data' => $tokenResult->accessToken
         ];
 

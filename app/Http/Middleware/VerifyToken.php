@@ -26,12 +26,12 @@ class VerifyToken
     {
         $user = Auth::user();
         $userSerialize = serialize($user);
-        $userUnserializeArray = (array) unserialize($userSerialize);
-        $arrayKeys = array_keys($userUnserializeArray);
+        $userUniversalizeArray = (array) unserialize($userSerialize);
+        $arrayKeys = array_keys($userUniversalizeArray);
         foreach ($arrayKeys as $value)
         {
             if (strpos($value, 'accessToken') !== false) {
-                $userAccessTokenArray = (array) $userUnserializeArray[$value];
+                $userAccessTokenArray = (array) $userUniversalizeArray[$value];
                 $arrayAccessKeys = array_keys($userAccessTokenArray);
                 foreach ($arrayAccessKeys as $arrayAccessValue) {
                     if (strpos($arrayAccessValue, 'original') !== false) {
